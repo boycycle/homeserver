@@ -1,0 +1,15 @@
+type: custom:mushroom-vacuum-card
+entity: vacuum.mrs_robot
+commands:
+  - start_pause
+  - return_home
+  - stop
+  - locate
+grid_options:
+  columns: 6
+  rows: 2
+secondary_info: state
+primary_info: name
+icon_animation: true
+icon_type: icon
+fill_container: false

@@ -1,0 +1,42 @@
+image: /local/pics/automower.png
+image_size: "3"
+show_animation: true
+show_status: true
+show_toolbar: true
+type: custom:landroid-card
+entity: lawn_mower.grass_hoover
+image_left: true
+compact_view: false
+show_name: true
+actions:
+  start_mowing:
+    service: lawn_mower.start_mowing
+    service_data:
+      entity_id: lawn_mower.grass_hoover
+  pause:
+    service: lawn_mower.pause
+    service_data:
+      entity_id: lawn_mower.grass_hoover
+  dock:
+    service: lawn_mower.dock
+    service_data:
+      entity_id: lawn_mower.grass_hoover
+shortcuts:
+  - name: Cutting Height
+    service: browser_mod.more_info
+    icon: mdi:grass
+    service_data:
+      large: false
+      ignore_popup_card: false
+      entity: number.grass_hoover_cutting_height
+  - name: Headlights
+    service: browser_mod.more_info
+    icon: mdi:car-light-high
+    service_data:
+      large: false
+      ignore_popup_card: false
+      entity: select.grass_hoover_headlight_mode
+grid_options:
+  columns: 12
+  rows: 5
+  
