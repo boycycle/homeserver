@@ -36,24 +36,14 @@ cards:
         service: lawn_mower.dock
         service_data:
           entity_id: lawn_mower.grass_hoover
-    shortcuts:
-      - name: Cutting Height
-        service: browser_mod.more_info
-        icon: mdi:grass
-        service_data:
-          large: false
-          ignore_popup_card: false
-          entity: number.grass_hoover_cutting_height
-      - name: Headlights
-        service: browser_mod.more_info
-        icon: mdi:car-light-high
-        service_data:
-          large: false
-          ignore_popup_card: false
-          entity: select.grass_hoover_headlight_mode
     grid_options:
       columns: 12
       rows: 5
+    settings:
+      - number.grass_hoover_cutting_height
+      - select.grass_hoover_headlight_mode
+      - button.grass_hoover_sync_clock
+      - switch.grass_hoover_enable_schedule
   - type: custom:map-card
     x: 53.45576000772471
     "y": -6.66445129387974
