@@ -1,0 +1,13 @@
+type: heading
+icon: mdi:robot
+heading_style: subtitle
+badges:
+  - type: entity
+    entity: sensor.mrs_robot_battery
+    show_state: true
+    show_icon: true
+    color: state
+grid_options:
+  columns: 6
+  rows: 1
+heading: Robots
