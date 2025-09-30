@@ -9,3 +9,5 @@
     - Domain
   - OpenMediaVault
     - [How I added physical HDD's to my OMV](https://youtu.be/Bce7VT3kJ4g?si=4Huur5pdOAJ5uARx)
+  - Zigbee2MQTT
+  - MQTT Broker
