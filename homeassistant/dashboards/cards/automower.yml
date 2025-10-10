@@ -1,42 +1,58 @@
-image: /local/pics/automower.png
-image_size: "3"
-show_animation: true
-show_status: true
-show_toolbar: true
-type: custom:landroid-card
-entity: lawn_mower.grass_hoover
-image_left: true
-compact_view: false
-show_name: true
-actions:
-  start_mowing:
-    service: lawn_mower.start_mowing
-    service_data:
-      entity_id: lawn_mower.grass_hoover
-  pause:
-    service: lawn_mower.pause
-    service_data:
-      entity_id: lawn_mower.grass_hoover
-  dock:
-    service: lawn_mower.dock
-    service_data:
-      entity_id: lawn_mower.grass_hoover
-shortcuts:
-  - name: Cutting Height
-    service: browser_mod.more_info
-    icon: mdi:grass
-    service_data:
-      large: false
-      ignore_popup_card: false
-      entity: number.grass_hoover_cutting_height
-  - name: Headlights
-    service: browser_mod.more_info
-    icon: mdi:car-light-high
-    service_data:
-      large: false
-      ignore_popup_card: false
-      entity: select.grass_hoover_headlight_mode
-grid_options:
-  columns: 12
-  rows: 5
-  
+type: vertical-stack
+cards:
+  - type: heading
+    icon: ""
+    heading_style: subtitle
+    badges:
+      - type: entity
+        entity: sensor.mr_robot_battery
+        show_state: true
+        show_icon: true
+        color: state
+    grid_options:
+      columns: 6
+      rows: 1
+  - image: /local/pics/automower.png
+    image_size: "3"
+    show_animation: true
+    show_edgecut: false
+    show_status: true
+    show_toolbar: true
+    type: custom:landroid-card
+    entity: lawn_mower.grass_hoover
+    image_left: true
+    compact_view: false
+    show_name: true
+    actions:
+      start_mowing:
+        service: lawn_mower.start_mowing
+        service_data:
+          entity_id: lawn_mower.grass_hoover
+      pause:
+        service: lawn_mower.pause
+        service_data:
+          entity_id: lawn_mower.grass_hoover
+      dock:
+        service: lawn_mower.dock
+        service_data:
+          entity_id: lawn_mower.grass_hoover
+    grid_options:
+      columns: 12
+      rows: 5
+    settings:
+      - number.grass_hoover_cutting_height
+      - select.grass_hoover_headlight_mode
+      - button.grass_hoover_sync_clock
+      - switch.grass_hoover_enable_schedule
+  - type: custom:map-card
+    x: 53.45576000772471
+    "y": -6.66445129387974
+    zoom: 19
+    history_start: 2 hours ago
+    entities:
+      - entity: device_tracker.grass_hoover
+    tile_layer_url: https://mt0.google.com/vt/lyrs=s&x={x}&y={y}&z={z}
+    tile_layer_options:
+      attribution: © Google Satellite
+      maxZoom: 22
+    theme_mode: light
