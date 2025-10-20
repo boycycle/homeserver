@@ -73,7 +73,7 @@ button_card_templates:
         - font-size: 12px
 views:
   - type: sections
-    max_columns: 1
+    max_columns: 3
     dense_section_placement: false
     path: Home
     title: Home
@@ -368,70 +368,6 @@ views:
               rows: auto
             view_layout:
               grid-area: lights
-      - type: grid
-        cards:
-          - square: false
-            type: grid
-            cards:
-              - type: custom:timeflow-card
-                title: 🗑️ Rubbish Collection
-                target_date: '{{ states(''sensor.next_rubbish_collection'') }}'
-                entities:
-                  - name: Next Rubbish Pickup
-                    icon: mdi:trash-can
-                    color: gray
-              - type: custom:timeflow-card
-                title: Backup
-                target_date: sensor.backup_next_scheduled_automatic_backup
-                color: '#ffffff'
-                progress_color: '#8391B2'
-                show_seconds: false
-                show_minutes: false
-                show_hours: true
-                show_days: false
-                show_months: false
-                background_color: rgba(69, 70, 68, 0.4)
-                creation_date: sensor.backup_last_successful_automatic_backup
-                card_mod:
-                  style:
-                    .: |
-                      ha-card {
-                        border-radius: 28px !important;
-                        box-shadow: none !important;
-                        border: none !important;
-                       }
-                      ha-card .title {
-                        font-size: 1.4rem !important;
-                      }
-                      ha-card .subtitle {
-                        font-size: 1.3rem !important;
-                      }
-                      ha-card .subtitle {
-                        color: #888888; /* A light gray */
-                      }
-                      .card-content {
-                        flex-direction: row !important;
-                        align-items: center !important;
-                        
-                tap_action:
-                  action: more-info
-                  entity: sensor.backup_last_successful_automatic_backup
-            columns: 2
-            title: Timeflows
-            view_layout:
-              grid-area: lights
-          - type: custom:button-card
-            name: Looks like you've reached the end 👀
-            styles:
-              card:
-                - background: none
-                - box-shadow: none
-                - border: none
-              name:
-                - opacity: 60%
-                - font-size: 16px
-      - type: grid
-        cards:
           - type: custom:navbar-card
             iphone: null
             show_labels: true
@@ -456,6 +392,710 @@ views:
                 label: Timeflows
             mobile:
               mode: floating
+      - type: grid
+        cards:
+          - type: vertical-stack
+            cards:
+              - type: horizontal-stack
+                cards:
+                  - type: custom:mini-graph-card
+                    entities:
+                      - sensor.living_room_temphumid_temperature
+                    hours_to_show: 8
+                    points_per_hour: 2
+                    name: Living Room
+                    color_thresholds:
+                      - value: 10
+                        color: '#126cf3'
+                      - value: 15
+                        color: '#4da6f3'
+                      - value: 17.5
+                        color: '#f3a712'
+                      - value: 19
+                        color: '#f36f12'
+                      - value: 21
+                        color: '#f34512'
+                      - value: 23
+                        color: '#f31212'
+                    color_thresholds_transition: true
+                    tap_action:
+                      action: call-service
+                      service: input_boolean.toggle
+                      service_data:
+                        entity_id: input_boolean.toggle_living_room_bt
+                    show:
+                      labels: false
+                  - type: custom:mini-graph-card
+                    entities:
+                      - sensor.kitchen_average_temperature
+                    hours_to_show: 8
+                    points_per_hour: 2
+                    name: Kitchen
+                    color_thresholds:
+                      - value: 10
+                        color: '#126cf3'
+                      - value: 15
+                        color: '#4da6f3'
+                      - value: 17.5
+                        color: '#f3a712'
+                      - value: 19
+                        color: '#f36f12'
+                      - value: 21
+                        color: '#f34512'
+                      - value: 23
+                        color: '#f31212'
+                    color_thresholds_transition: true
+                    tap_action:
+                      action: call-service
+                      service: input_boolean.toggle
+                      service_data:
+                        entity_id: input_boolean.toggle_kitchen_bt
+                    show:
+                      labels: false
+              - type: horizontal-stack
+                cards:
+                  - type: conditional
+                    conditions:
+                      - condition: state
+                        entity: input_boolean.toggle_living_room_bt
+                        state: 'on'
+                    card:
+                      type: custom:better-thermostat-ui-card
+                      entity: climate.living_room_bt
+                      name: Living Room
+                      disable_window: true
+                      disable_summer: true
+                      disable_eco: true
+                      disable_off: false
+                      disable_buttons: false
+                      set_current_as_main: true
+                      disable_menu: true
+                      disable_heat: false
+              - type: horizontal-stack
+                cards:
+                  - type: conditional
+                    conditions:
+                      - condition: state
+                        entity: input_boolean.toggle_kitchen_bt
+                        state: 'on'
+                    card:
+                      type: custom:better-thermostat-ui-card
+                      name: Kitchen
+                      disable_window: true
+                      disable_summer: true
+                      disable_eco: true
+                      disable_off: false
+                      disable_buttons: false
+                      set_current_as_main: true
+                      disable_menu: true
+                      disable_heat: false
+                      entity: climate.bt_kitchen
+              - type: horizontal-stack
+                cards:
+                  - type: custom:mini-graph-card
+                    entities:
+                      - sensor.primary_bedroom_temphumid_temperature
+                    hours_to_show: 8
+                    points_per_hour: 2
+                    name: Primary Bedroom
+                    color_thresholds:
+                      - value: 10
+                        color: '#126cf3'
+                      - value: 15
+                        color: '#4da6f3'
+                      - value: 17.5
+                        color: '#f3a712'
+                      - value: 19
+                        color: '#f36f12'
+                      - value: 21
+                        color: '#f34512'
+                      - value: 23
+                        color: '#f31212'
+                    color_thresholds_transition: true
+                    tap_action:
+                      action: call-service
+                      service: input_boolean.toggle
+                      service_data:
+                        entity_id: input_boolean.toggle_primary_bedroom_bt
+                    show:
+                      labels: false
+                  - type: custom:mini-graph-card
+                    entities:
+                      - sensor.guest_bedroom_temperature
+                    hours_to_show: 8
+                    points_per_hour: 2
+                    name: Guest Bedroom
+                    color_thresholds:
+                      - value: 10
+                        color: '#126cf3'
+                      - value: 15
+                        color: '#4da6f3'
+                      - value: 17.5
+                        color: '#f3a712'
+                      - value: 19
+                        color: '#f36f12'
+                      - value: 21
+                        color: '#f34512'
+                      - value: 23
+                        color: '#f31212'
+                    color_thresholds_transition: true
+                    tap_action:
+                      action: call-service
+                      service: input_boolean.toggle
+                      service_data:
+                        entity_id: input_boolean.toggle_guest_bedroom_bt
+                    show:
+                      labels: false
+              - type: horizontal-stack
+                cards:
+                  - type: conditional
+                    conditions:
+                      - condition: state
+                        entity: input_boolean.toggle_primary_bedroom_bt
+                        state: 'on'
+                    card:
+                      type: custom:better-thermostat-ui-card
+                      name: Primary Bedroom
+                      disable_window: true
+                      disable_summer: true
+                      disable_eco: true
+                      disable_off: false
+                      disable_buttons: false
+                      set_current_as_main: true
+                      disable_menu: true
+                      disable_heat: false
+                      entity: climate.primary_bedroom_bt
+              - type: horizontal-stack
+                cards:
+                  - type: conditional
+                    conditions:
+                      - condition: state
+                        entity: input_boolean.toggle_guest_bedroom_bt
+                        state: 'on'
+                    card:
+                      type: custom:better-thermostat-ui-card
+                      name: Guest Bedroom
+                      disable_window: true
+                      disable_summer: true
+                      disable_eco: true
+                      disable_off: false
+                      disable_buttons: false
+                      set_current_as_main: true
+                      disable_menu: true
+                      disable_heat: false
+                      entity: climate.guest_bedroom_bt
+              - type: horizontal-stack
+                cards:
+                  - type: custom:mini-graph-card
+                    entities:
+                      - sensor.office_temphumid_temperature
+                    hours_to_show: 8
+                    points_per_hour: 2
+                    name: Office
+                    color_thresholds:
+                      - value: 10
+                        color: '#126cf3'
+                      - value: 15
+                        color: '#4da6f3'
+                      - value: 17.5
+                        color: '#f3a712'
+                      - value: 19
+                        color: '#f36f12'
+                      - value: 21
+                        color: '#f34512'
+                      - value: 23
+                        color: '#f31212'
+                    color_thresholds_transition: true
+                    tap_action:
+                      action: call-service
+                      service: input_boolean.toggle
+                      service_data:
+                        entity_id: input_boolean.toggle_office_bt
+                    show:
+                      labels: false
+                  - type: custom:mini-graph-card
+                    entities: []
+              - type: horizontal-stack
+                cards:
+                  - type: conditional
+                    conditions:
+                      - condition: state
+                        entity: input_boolean.toggle_office_bt
+                        state: 'on'
+                    card:
+                      type: custom:better-thermostat-ui-card
+                      name: Office
+                      disable_window: true
+                      disable_summer: true
+                      disable_eco: true
+                      disable_off: false
+                      disable_buttons: false
+                      set_current_as_main: true
+                      disable_menu: true
+                      disable_heat: false
+                      entity: climate.office_bt
+            title: Climate Control
+          - square: false
+            type: grid
+            cards:
+              - type: horizontal-stack
+                cards:
+                  - type: custom:button-card
+                    entity: weather.pirateweather
+                    show_name: false
+                    show_icon: false
+                    custom_fields:
+                      icon: |
+                        [[[
+                          var weather = states["weather.pirateweather"].state;
+                          if (states['weather.pirateweather'].state == 'partlycloudy' && states['sun.sun'].state == 'below_horizon') {
+                            return `<img src="/local/weather_icons/partly-cloudy-night.svg" width="90" height="90" />`
+                          } else {
+                            return `<img src="/local/weather_icons/${weather}.svg" width="90" height="90" />`
+                          }
+                        ]]]
+                      temp: |
+                        [[[
+                          return states['weather.pirateweather'].attributes.temperature + '°c'
+                        ]]]
+                      cond: |
+                        [[[
+                          var time = states["weather.pirateweather"].state;
+                          if (time == 'clear-night'){
+                            return 'Clear';
+                          } else if (time == 'clear'){
+                            return 'Sunny';
+                          } else if (time == 'partlycloudy'){
+                            return 'Partly Cloudy';
+                          } else {
+                            return states["weather.pirateweather"].state;
+                          }
+                        ]]]
+                    styles:
+                      card:
+                        - position: relative
+                        - height: 120pt
+                      custom_fields:
+                        icon:
+                          - position: absolute
+                          - top: 30%
+                          - left: 50%
+                          - right: 50%
+                          - transform: translate(-50%, -50%)
+                          - width: 90px
+                          - height: 90px
+                        temp:
+                          - position: absolute
+                          - top: 64%
+                          - left: 50%
+                          - transform: translate(-50%, -50%)
+                          - width: 100%
+                          - text-align: center
+                          - font-size: 23pt
+                          - font-weight: 700
+                        cond:
+                          - position: absolute
+                          - top: 80%
+                          - left: 50%
+                          - transform: translate(-50%, -50%)
+                          - width: 100%
+                          - text-align: center
+                          - font-size: 10pt
+                          - text-transform: capitalize
+                  - type: custom:button-card
+                    entity: weather.pirateweather
+                    show_name: false
+                    show_icon: false
+                    custom_fields:
+                      icon_humidity: >
+                        <ha-icon icon="mdi:water-outline" style="width:60px;
+                        height:60px;"></ha-icon>
+                      humidity: |
+                        [[[
+                          return states["weather.pirateweather"].attributes.humidity + '%'
+                        ]]]
+                    styles:
+                      card:
+                        - position: relative
+                        - height: 120pt
+                      custom_fields:
+                        icon_humidity:
+                          - position: absolute
+                          - top: 35%
+                          - left: 50%
+                          - transform: translate(-50%, -50%)
+                        humidity:
+                          - position: absolute
+                          - top: 70%
+                          - left: 50%
+                          - transform: translate(-50%, -50%)
+                          - font-size: 18pt
+                          - font-weight: 600
+                  - type: custom:button-card
+                    entity: weather.pirateweather
+                    show_name: false
+                    show_icon: false
+                    custom_fields:
+                      icon_wind: >
+                        <ha-icon icon="mdi:weather-windy" style="width:40px;
+                        height:40px;"></ha-icon>
+                      wind: |
+                        [[[
+                          let myNumber = states["weather.pirateweather"].attributes.wind_speed;
+                          return `${Math.round(myNumber)} km/h`;
+                        ]]]
+                    styles:
+                      card:
+                        - position: relative
+                        - height: 120pt
+                      custom_fields:
+                        icon_wind:
+                          - position: absolute
+                          - top: 35%
+                          - left: 50%
+                          - transform: translate(-50%, -50%)
+                        wind:
+                          - position: absolute
+                          - top: 70%
+                          - left: 50%
+                          - transform: translate(-50%, -50%)
+                          - font-size: 18pt
+                          - font-weight: 600
+            columns: 1
+            title: Weather
+            view_layout:
+              grid-area: lights
+          - type: custom:button-card
+            name: Looks like you've reached the end 👀
+            styles:
+              card:
+                - background: none
+                - box-shadow: none
+                - border: none
+              name:
+                - opacity: 60%
+                - font-size: 16px
+      - type: grid
+        cards:
+          - square: false
+            type: grid
+            cards:
+              - type: custom:vertical-stack-in-card
+                cards:
+                  - type: custom:button-card
+                    template: entity
+                    entity: sensor.system_monitor_processor_use
+                    name: CPU Usage
+                    styles:
+                      card:
+                        - height: 100px
+                        - padding: 12px 16px
+                        - background: var(--card-background-color)
+                        - border-radius: 12px 12px 0 0
+                        - box-shadow: none
+                        - border: none
+                      name:
+                        - font-size: 16px
+                        - color: var(--primary-text-color)
+                      state:
+                        - font-size: 15px
+                        - padding-top: 19px
+                        - padding-bottom: 19px
+                  - type: custom:mini-graph-card
+                    entities:
+                      - entity: sensor.system_monitor_processor_use
+                    show:
+                      name: false
+                      icon: false
+                      state: false
+                      labels: false
+                    line_width: 3
+                    hours_to_show: 2
+                    points_per_hour: 5
+                    line_color: '#F9EA9A'
+                    animate: true
+              - type: custom:vertical-stack-in-card
+                cards:
+                  - type: custom:button-card
+                    template: entity
+                    entity: sensor.system_monitor_memory_usage
+                    state_display: |
+                      [[[
+                        return states['sensor.system_monitor_memory_usage'].state + '%'
+                      ]]]
+                    name: Memory Usage
+                    styles:
+                      card:
+                        - height: 100px
+                        - padding: 12px 16px
+                        - background: var(--card-background-color)
+                        - border-radius: 12px 12px 0 0
+                        - box-shadow: none
+                        - border: none
+                      name:
+                        - font-size: 16px
+                        - color: var(--primary-text-color)
+                      state:
+                        - font-size: 15px
+                        - padding-top: 19px
+                        - padding-bottom: 19px
+                  - type: custom:mini-graph-card
+                    entities:
+                      - entity: sensor.system_monitor_memory_usage
+                    show:
+                      name: false
+                      icon: false
+                      state: false
+                      labels: false
+                    line_width: 3
+                    hours_to_show: 2
+                    points_per_hour: 5
+                    line_color: '#F2CEE6'
+                    animate: true
+                    style: ''
+              - type: custom:vertical-stack-in-card
+                cards:
+                  - type: custom:button-card
+                    template: entity
+                    entity: sensor.system_monitor_load_15_min
+                    name: Load (15 MIns)
+                    styles:
+                      card:
+                        - height: 100px
+                        - padding: 12px 16px
+                        - background: var(--card-background-color)
+                        - border-radius: 12px 12px 0 0
+                        - box-shadow: none
+                        - border: none
+                      name:
+                        - font-size: 16px
+                        - color: var(--primary-text-color)
+                      state:
+                        - font-size: 15px
+                        - padding-top: 19px
+                        - padding-bottom: 19px
+                  - type: custom:mini-graph-card
+                    entities:
+                      - entity: sensor.system_monitor_load_15_min
+                    show:
+                      name: false
+                      icon: false
+                      state: false
+                      labels: false
+                    line_width: 3
+                    hours_to_show: 2
+                    points_per_hour: 5
+                    line_color: '#C3DBC5'
+                    animate: true
+              - type: custom:vertical-stack-in-card
+                cards:
+                  - type: custom:button-card
+                    template: entity
+                    entity: sensor.system_monitor_disk_usage
+                    state_display: |
+                      [[[
+                        return states['sensor.system_monitor_disk_usage'].state + ' %'
+                      ]]]
+                    name: Storage Used
+                    icon: mdi:harddisk
+                    styles:
+                      card:
+                        - height: 100px
+                        - padding: 12px 16px
+                        - background: var(--card-background-color)
+                        - border-radius: 12px 12px 0 0
+                        - box-shadow: none
+                        - border: none
+                      name:
+                        - font-size: 16px
+                        - color: var(--primary-text-color)
+                      state:
+                        - font-size: 15px
+                        - padding-top: 19px
+                        - padding-bottom: 19px
+                  - type: custom:mini-graph-card
+                    entities:
+                      - entity: sensor.system_monitor_disk_usage
+                        color: '#7798AB'
+                    show:
+                      name: false
+                      icon: false
+                      state: false
+                      labels: false
+                    hours_to_show: 720
+                    points_per_hour: 1
+                    lower_bound: 1
+                    upper_bound: 62.3
+                    animate: true
+            title: Stats
+            columns: 2
+          - square: false
+            type: grid
+            cards:
+              - type: custom:auto-entities
+                card:
+                  type: entities
+                  show_header_toggle: false
+                  card_mod:
+                    style: |
+                      ha-card {
+                        font-size: 13px;
+                      }
+                filter:
+                  include:
+                    - options:
+                        secondary_info: last-updated
+                      domain: update
+                      state: 'on'
+                  exclude:
+                    - options: {}
+                      entity_id: update.*_backup*
+                sort:
+                  method: state
+                  reverse: true
+            title: Updates
+            columns: 1
+          - type: vertical-stack
+            title: System Options
+            cards:
+              - type: custom:button-card
+                tap_action:
+                  action: none
+                show_name: false
+                show_icon: false
+                styles:
+                  card:
+                    - border-radius: 18px
+                    - padding: 5px
+                    - background-color: transparent
+                  grid:
+                    - grid-template-areas: '"button1 button2"'
+                    - grid-template-columns: 1fr 1fr
+                    - column-gap: 5px
+                custom_fields:
+                  button1:
+                    card:
+                      type: custom:button-card
+                      name: Restart HA
+                      icon: mdi:restart
+                      tap_action:
+                        action: call-service
+                        service: homeassistant.restart
+                      confirmation:
+                        text: Are you sure you want to restart Home Assistant?
+                      styles:
+                        card:
+                          - background-color: rgba(100, 116, 139, 0.3)
+                          - border-radius: 18px
+                          - height: 62px
+                          - box-shadow: none
+                        grid:
+                          - grid-template-areas: '"i n"'
+                          - grid-template-columns: min-content 1fr
+                          - column-gap: 0px
+                        icon:
+                          - justify-self: center
+                          - align-self: center
+                          - padding-left: 8px
+                        name:
+                          - align-self: center
+                          - font-size: 15px
+                      extra_styles: |
+                        ha-card:active {
+                          background-color: #3da853;
+                        }
+                  button2:
+                    card:
+                      type: custom:button-card
+                      name: Restart System
+                      icon: mdi:server
+                      tap_action:
+                        action: call-service
+                        service: hassio.host_reboot
+                      confirmation:
+                        text: Are you sure you want to restart the entire system?
+                      styles:
+                        card:
+                          - background-color: rgba(100, 116, 139, 0.3)
+                          - border-radius: 18px
+                          - height: 62px
+                          - box-shadow: none
+                        grid:
+                          - grid-template-areas: '"i n"'
+                          - grid-template-columns: min-content 1fr
+                          - column-gap: 8px
+                        icon:
+                          - justify-self: center
+                          - align-self: center
+                          - padding-left: 0px
+                        name:
+                          - align-self: center
+                          - font-size: 15px
+                      extra_styles: |
+                        ha-card:active {
+                          background-color: #3da853;
+                        }
+                card_mod:
+                  style: |
+                    ha-card {
+                      border: none;
+                      box-shadow: none;
+                      background: none;
+                    }
+              - type: custom:button-card
+                tap_action:
+                  action: none
+                show_name: false
+                show_icon: false
+                styles:
+                  card:
+                    - border-radius: 18px
+                    - padding-top: 1px
+                    - background-color: transparent
+                  grid:
+                    - grid-template-areas: '"button1"'
+                    - grid-template-columns: 1fr
+                custom_fields:
+                  button1:
+                    card:
+                      type: custom:button-card
+                      name: Power Off System
+                      icon: mdi:power
+                      tap_action:
+                        action: call-service
+                        service: hassio.host_shutdown
+                      confirmation:
+                        text: >
+                          Are you sure you want to shut down the system? This
+                          action is not easily reversible.
+                      styles:
+                        card:
+                          - background-color: rgba(215, 50, 50, 0.25)
+                          - border-radius: 20px
+                          - box-shadow: none
+                          - height: 62px
+                        grid:
+                          - grid-template-areas: '"i n"'
+                          - grid-template-columns: min-content 1fr
+                          - column-gap: 8px
+                        icon:
+                          - justify-self: center
+                          - align-self: center
+                          - padding-left: 8px
+                        name:
+                          - align-self: center
+                          - font-size: 15px
+                      extra_styles: |
+                        ha-card:active {
+                          background-color: #d73232; /* Bright red on tap */
+                        }
+                card_mod:
+                  style: |
+                    ha-card {
+                      border: none;
+                      box-shadow: none;
+                      background: none;
+                    }
     theme: Material You
     badges: []
     background:
