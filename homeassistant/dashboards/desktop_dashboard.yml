@@ -73,7 +73,7 @@ button_card_templates:
         - font-size: 12px
 views:
   - type: sections
-    max_columns: 3
+    max_columns: 4
     dense_section_placement: false
     path: Home
     title: Home
@@ -377,17 +377,17 @@ views:
             layout: null
             auto_padding: true
             routes:
-              - url: /dashboard-iphone/Home
+              - url: /overview/Home
                 icon: mdi:home
                 icon_selected: mdi:home-variant
                 label: Home
-              - url: /dashboard-iphone/Climate
+              - url: /overview/Climate
                 icon: mdi:radiator
                 label: Climate
-              - url: /dashboard-iphone/System
+              - url: /overview/System
                 icon: mdi:server
                 label: Proxmox
-              - url: /dashboard-iphone/timeflows
+              - url: /overview/timeflows
                 icon: mdi:timer
                 label: Timeflows
             mobile:
@@ -633,7 +633,7 @@ views:
                       set_current_as_main: true
                       disable_menu: true
                       disable_heat: false
-                      entity: climate.office_bt
+                      entity: climate.bt_office
             title: Climate Control
           - square: false
             type: grid
@@ -765,16 +765,6 @@ views:
             title: Weather
             view_layout:
               grid-area: lights
-          - type: custom:button-card
-            name: Looks like you've reached the end 👀
-            styles:
-              card:
-                - background: none
-                - box-shadow: none
-                - border: none
-              name:
-                - opacity: 60%
-                - font-size: 16px
       - type: grid
         cards:
           - square: false
@@ -1096,6 +1086,28 @@ views:
                       box-shadow: none;
                       background: none;
                     }
+      - type: grid
+        cards:
+          - square: false
+            type: grid
+            columns: 1
+            title: Upcoming Shows
+            cards:
+              - type: custom:vertical-stack-in-card
+                cards:
+                  - type: custom:upcoming-media-card
+                    entity: sensor.sonarr_sonarr_upcoming_media
+                    image_style: poster
+                    enable_tooltips: true
+                    enable_transparency: true
+                    sort_by: airdate
+                    box_shadows: false
+                    max: 3
+                    title_size: medium
+                    line1_size: small
+                    line2_size: small
+                    line3_size: small
+                    line4_size: small
     theme: Material You
     badges: []
     background:
