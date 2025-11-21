@@ -1,0 +1,9 @@
+{% set temps = [
+  state_attr('climate.main_bathroom', 'current_temperature') | float(0)
+] %}
+{% set valid = temps | select('gt', 0) | list %}
+{% if valid | count > 0 %}
+  {{ ((valid | sum / valid | count) - 8) | round(1) }}
+{% else %}
+  unknown
+{% endif %}
