@@ -1,15 +1,7 @@
 kiosk_mode:
-  entity_settings:
-    - entity:
-        input_boolean.kiosk_mode: 'on'
-      hide_header: true
-      hide_menubutton: true
-      kiosk: true
-    - entity:
-        input_boolean.kiosk_mode: 'off'
-      hide_header: false
-      hide_menubutton: false
-      Kiosk: true
+  hide_sidebar: '[[[ is_state("input_boolean.hide_sidebar", "on") ]]]'
+  hide_header: '[[[ is_state("sensor.hide_header", "on") ]]]'
+  kiosk: '[[[ is_state("input_text.kiosk", "true") ]]]'
 button_card_templates:
   entity:
     show_state: true
@@ -79,6 +71,7 @@ views:
     title: Home
     visible:
       - user: 40587fc0322b4129884846b1e430f37a
+      - user: 1902b6f5ccbe4160aeab2bce338b1df3
     sections:
       - type: grid
         cards:
@@ -87,50 +80,15 @@ views:
               - type: vertical-stack
                 title: Lighting
                 cards:
-                  - type: custom:mushroom-template-card
-                    primary: Lighting
-                    secondary: >-
-                      {% set light1 = states('light.shane_lamp_bulb') %} {% set
-                      light2 = states('light.hall_lamp_bulb') %} {% set count =
-                      0 %} {% if light1 == 'on' %}{% set count = count + 1 %}{%
-                      endif %} {% if light2 == 'on' %}{% set count = count + 1
-                      %}{% endif %} {{ count }} lights on
-                    icon: mdi:lightbulb
-                    icon_color: >-
-                      {% set light1 = states('light.shane_lamp_bulb') %} {% set
-                      light2 = states('light.hall_lamp_bulb') %} {% if light1 ==
-                      'on' or light2 == 'on' %}
-                        amber
-                      {% else %}
-                        disabled
-                      {% endif %}
-                    tap_action:
-                      action: call-service
-                      service: input_boolean.toggle
-                      service_data:
-                        entity_id: input_boolean.toggle_lights
-                    hold_action:
-                      action: more-info
-                    double_tap_action:
-                      action: call-service
-                      service: script.toggle_living_hall_lights_together
-                    fill_container: false
-                    card_mod:
-                      style: |
-                        ha-card {
-                          border: none;
-                          box-shadow: none;
-                          background: none;
-                        }
                   - type: conditional
                     conditions:
                       - condition: state
                         entity: input_boolean.toggle_lights
                         state: 'on'
                     card:
+                      square: false
                       type: grid
                       columns: 2
-                      square: false
                       grid_options:
                         columns: 6
                         rows: 2
@@ -170,8 +128,8 @@ views:
                                         return 'black';
                                       ]]]
                         - type: custom:button-card
-                          name: Hall Lamp
-                          entity: light.hall_lamp_bulb
+                          name: Eimear's Lamp
+                          entity: light.eimear_lamp_bulb
                           size: 40%
                           show_state: true
                           aspect_ratio: 1/1
@@ -203,6 +161,158 @@ views:
                                         }
                                         return 'black';
                                       ]]]
+                        - type: custom:button-card
+                          name: Hall Lamp
+                          entity: switch.hall_lamp_plug
+                          icon: mdi:lightbulb-off
+                          size: 40%
+                          show_state: true
+                          aspect_ratio: 1/1
+                          tap_action:
+                            action: toggle
+                          hold_action:
+                            action: more-info
+                          styles:
+                            name:
+                              - font-size: 12px
+                              - padding-bottom: 3px !important
+                            state:
+                              - font-size: 18px
+                              - padding-bottom: 8px !important
+                          state:
+                            - value: 'on'
+                              icon: mdi:lightbulb
+                              styles:
+                                card:
+                                  - background-color: var(--primary-text-color)
+                                name:
+                                  - color: '#263238'
+                                state:
+                                  - color: '#263238'
+                                icon:
+                                  - color: |
+                                      [[[
+                                        if (entity.attributes.rgb_color) {
+                                          return `rgb(${entity.attributes.rgb_color.join(',')})`;
+                                        }
+                                        return 'orange';
+                                      ]]]
+                            - value: 'off'
+                              icon: mdi:lightbulb-off
+                        - type: custom:button-card
+                          name: Office Lamp
+                          entity: switch.office
+                          icon: mdi:lightbulb-off
+                          size: 40%
+                          show_state: true
+                          aspect_ratio: 1/1
+                          tap_action:
+                            action: toggle
+                          hold_action:
+                            action: more-info
+                          styles:
+                            name:
+                              - font-size: 12px
+                              - padding-bottom: 3px !important
+                            state:
+                              - font-size: 18px
+                              - padding-bottom: 8px !important
+                          state:
+                            - value: 'on'
+                              icon: mdi:lightbulb
+                              styles:
+                                card:
+                                  - background-color: var(--primary-text-color)
+                                name:
+                                  - color: '#263238'
+                                state:
+                                  - color: '#263238'
+                                icon:
+                                  - color: |
+                                      [[[
+                                        if (entity.attributes.rgb_color) {
+                                          return `rgb(${entity.attributes.rgb_color.join(',')})`;
+                                        }
+                                        return 'orange';
+                                      ]]]
+                            - value: 'off'
+                              icon: mdi:lightbulb-off
+                        - type: custom:button-card
+                          name: Living Room Big
+                          entity: switch.big_lamp
+                          icon: mdi:lightbulb-off
+                          size: 40%
+                          show_state: true
+                          aspect_ratio: 1/1
+                          tap_action:
+                            action: toggle
+                          hold_action:
+                            action: more-info
+                          styles:
+                            name:
+                              - font-size: 12px
+                              - padding-bottom: 3px !important
+                            state:
+                              - font-size: 18px
+                              - padding-bottom: 8px !important
+                          state:
+                            - value: 'on'
+                              icon: mdi:lightbulb
+                              styles:
+                                card:
+                                  - background-color: var(--primary-text-color)
+                                name:
+                                  - color: '#263238'
+                                state:
+                                  - color: '#263238'
+                                icon:
+                                  - color: |
+                                      [[[
+                                        if (entity.attributes.rgb_color) {
+                                          return `rgb(${entity.attributes.rgb_color.join(',')})`;
+                                        }
+                                        return 'orange';
+                                      ]]]
+                            - value: 'off'
+                              icon: mdi:lightbulb-off
+                        - type: custom:button-card
+                          name: Living Room Small
+                          entity: switch.shane_lamp
+                          icon: mdi:lightbulb-off
+                          size: 40%
+                          show_state: true
+                          aspect_ratio: 1/1
+                          tap_action:
+                            action: toggle
+                          hold_action:
+                            action: more-info
+                          styles:
+                            name:
+                              - font-size: 12px
+                              - padding-bottom: 3px !important
+                            state:
+                              - font-size: 18px
+                              - padding-bottom: 8px !important
+                          state:
+                            - value: 'on'
+                              icon: mdi:lightbulb
+                              styles:
+                                card:
+                                  - background-color: var(--primary-text-color)
+                                name:
+                                  - color: '#263238'
+                                state:
+                                  - color: '#263238'
+                                icon:
+                                  - color: |
+                                      [[[
+                                        if (entity.attributes.rgb_color) {
+                                          return `rgb(${entity.attributes.rgb_color.join(',')})`;
+                                        }
+                                        return 'orange';
+                                      ]]]
+                            - value: 'off'
+                              icon: mdi:lightbulb-off
               - type: grid
                 square: false
                 title: Controls
@@ -222,6 +332,93 @@ views:
                           box-shadow: none;
                           background: none;
                         }
+                  - type: custom:mushroom-entity-card
+                    entity: switch.shellywalldisplay_heating
+                    name: Heating
+                    icon: mdi:radiator
+                    fill_container: true
+                    tap_action:
+                      action: toggle
+                    icon_color: '#FF5449'
+                    card_mod:
+                      style: |
+                        ha-card {
+                          border: none;
+                          box-shadow: none;
+                          background: none;
+                        }
+                  - type: custom:mushroom-entity-card
+                    entity: input_boolean.heating_boost
+                    name: Heating Boost
+                    icon: mdi:thermostat-auto
+                    fill_container: true
+                    tap_action:
+                      action: toggle
+                    icon_color: '#FF5449'
+                    card_mod:
+                      style: |
+                        ha-card {
+                          border: none;
+                          box-shadow: none;
+                          background: none;
+                        }
+                  - type: custom:mushroom-entity-card
+                    entity: input_boolean.hot_water_boost
+                    name: Hot Water Boost
+                    icon: mdi:water-thermometer
+                    fill_container: true
+                    tap_action:
+                      action: toggle
+                    icon_color: '#FF5449'
+                    card_mod:
+                      style: |
+                        ha-card {
+                          border: none;
+                          box-shadow: none;
+                          background: none;
+                        }
+                  - type: custom:mushroom-entity-card
+                    name: Oil level (L)
+                    entity: sensor.oil_level
+                    icon: mdi:oil-level
+                    fill_container: true
+                    tap_action:
+                      action: none
+                    hold_action:
+                      action: none
+                    double_tap_action:
+                      action: none
+                    icon_tap_action:
+                      action: none
+                    icon_color: disabled
+                    card_mod:
+                      style: |
+                        ha-card {
+                          border: none;
+                          box-shadow: none;
+                          background: none;
+                        }
+                  - type: custom:mushroom-entity-card
+                    name: Water Salt (Last Added)
+                    entity: sensor.days_since_water_salt
+                    icon: mdi:shaker-outline
+                    fill_container: true
+                    tap_action:
+                      action: none
+                    hold_action:
+                      action: none
+                    double_tap_action:
+                      action: none
+                    icon_tap_action:
+                      action: none
+                    icon_color: disabled
+                    card_mod:
+                      style: |
+                        ha-card {
+                          border: none;
+                          box-shadow: none;
+                          background: none;
+                        }
                 columns: 1
                 grid_options:
                   columns: 6
@@ -233,9 +430,23 @@ views:
               - type: vertical-stack
                 cards:
                   - type: custom:mushroom-climate-card
-                    entity: climate.living_room_bt
-                    name: Living Room
-                    icon: mdi:television
+                    entity: climate.hall_bt
+                    name: Hall
+                    icon: mdi:floor-plan
+                    fill_container: false
+                    hvac_modes:
+                      - heat
+                      - 'off'
+                    show_temperature_control: false
+                    tap_action:
+                      action: none
+                    hold_action:
+                      action: more-info
+                    double_tap_action:
+                      action: more-info
+                  - type: custom:mushroom-climate-card
+                    name: Kitchen
+                    icon: mdi:stove
                     fill_container: false
                     hvac_modes:
                       - heat
@@ -244,12 +455,59 @@ views:
                     hold_action:
                       action: more-info
                     double_tap_action:
-                      action: toggle
+                      action: more-info
                     tap_action:
                       action: none
+                    entity: climate.bt_kitchen
                   - type: custom:mushroom-climate-card
-                    entity: climate.primary_bedroom_bt
-                    name: Primary Bedroom
+                    name: Living Room
+                    icon: mdi:television-classic
+                    fill_container: false
+                    hvac_modes:
+                      - heat
+                      - 'off'
+                    show_temperature_control: false
+                    tap_action:
+                      action: none
+                    hold_action:
+                      action: more-info
+                    double_tap_action:
+                      action: more-info
+                    entity: climate.living_room_bt
+                  - type: custom:mushroom-climate-card
+                    name: Office
+                    icon: mdi:gamepad-variant
+                    fill_container: false
+                    hvac_modes:
+                      - heat
+                      - 'off'
+                    show_temperature_control: false
+                    tap_action:
+                      action: none
+                    hold_action:
+                      action: more-info
+                    double_tap_action:
+                      action: more-info
+                    entity: climate.bt_office
+                  - type: custom:mushroom-climate-card
+                    entity: climate.hot_water_2
+                    name: Hot Water
+                    icon: mdi:water
+                    fill_container: false
+                    hvac_modes:
+                      - heat
+                      - 'off'
+                    show_temperature_control: false
+                    tap_action:
+                      action: none
+                    hold_action:
+                      action: more-info
+                    double_tap_action:
+                      action: more-info
+              - type: vertical-stack
+                cards:
+                  - type: custom:mushroom-climate-card
+                    name: Main Bedroom
                     icon: mdi:bed-king-outline
                     fill_container: false
                     hvac_modes:
@@ -260,44 +518,44 @@ views:
                       action: none
                     hold_action:
                       action: more-info
+                    entity: climate.primary_bedroom_bt
                     double_tap_action:
-                      action: toggle
-                  - type: custom:mushroom-climate-card
-                    name: Office
-                    icon: mdi:office-building-outline
-                    fill_container: false
-                    hvac_modes:
-                      - heat
-                      - 'off'
-                    show_temperature_control: false
-                    tap_action:
-                      action: none
-                    hold_action:
                       action: more-info
-                    double_tap_action:
-                      action: toggle
-                    entity: climate.bt_office
-              - type: vertical-stack
-                cards:
-                  - type: custom:mushroom-climate-card
-                    name: Kitchen
-                    icon: mdi:stove
-                    fill_container: false
-                    hvac_modes:
-                      - heat
-                      - 'off'
-                    show_temperature_control: false
-                    tap_action:
-                      action: none
-                    hold_action:
-                      action: more-info
-                    double_tap_action:
-                      action: toggle
-                    entity: climate.bt_kitchen
                   - type: custom:mushroom-climate-card
                     entity: climate.guest_bedroom_bt
                     name: Guest Bedroom
+                    fill_container: false
                     icon: mdi:bed-double-outline
+                    hvac_modes:
+                      - heat
+                      - 'off'
+                    show_temperature_control: false
+                    collapsible_controls: false
+                    tap_action:
+                      action: none
+                    hold_action:
+                      action: more-info
+                    double_tap_action:
+                      action: more-info
+                  - type: custom:mushroom-climate-card
+                    entity: climate.bedroom_3_bt
+                    name: Bedroom 3
+                    fill_container: false
+                    icon: mdi:bed-single-outline
+                    hvac_modes:
+                      - heat
+                      - 'off'
+                    show_temperature_control: false
+                    collapsible_controls: false
+                    tap_action:
+                      action: none
+                    hold_action:
+                      action: more-info
+                    double_tap_action:
+                      action: more-info
+                  - type: custom:mushroom-climate-card
+                    name: Main Bathroom
+                    icon: mdi:shower
                     fill_container: false
                     hvac_modes:
                       - heat
@@ -308,66 +566,131 @@ views:
                     hold_action:
                       action: more-info
                     double_tap_action:
-                      action: toggle
+                      action: more-info
+                    entity: climate.main_bathroom_2
+                  - type: custom:mushroom-climate-card
+                    name: Upstairs
+                    icon: mdi:stairs
+                    fill_container: false
+                    hvac_modes:
+                      - heat
+                      - 'off'
+                    show_temperature_control: false
+                    tap_action:
+                      action: none
+                    hold_action:
+                      action: more-info
+                    double_tap_action:
+                      action: more-info
+                    entity: climate.upstairs_bt
             title: Heating
-          - square: false
-            type: grid
+          - type: vertical-stack
             cards:
-              - type: custom:mushroom-template-card
-                entity: device_tracker.sd_iphone_14_pro_max
-                primary: Shane's iPhone
-                secondary: >
-                  {% set battery =
-                  states('sensor.sd_iphone_14_pro_max_battery_level') %}
+              - type: horizontal-stack
+                cards:
+                  - type: custom:mushroom-template-card
+                    entity: device_tracker.sd_iphone_air
+                    primary: Shane's iPhone
+                    secondary: >
+                      {% set battery =
+                      states('sensor.sd_iphone_air_battery_level') %}
 
-                  {% set location = 'Home' if is_state(entity, 'home') else
-                  'Away' %}
+                      {% set location = 'Home' if is_state(entity, 'home') else
+                      'Away' %}
 
-                  {{ location }} • {{ battery }}%
-                icon: mdi:cellphone
-                icon_color: |
-                  {% if is_state(entity, 'home') %}
-                    green
-                  {% else %}
-                    gray
-                  {% endif %}
-                layout: horizontal
-                tap_action:
-                  action: more-info
-                badge_icon: >
-                  {% set battery_level_str =
-                  states('sensor.sd_iphone_14_pro_max_battery_level') %} {% set
-                  state = states('sensor.sd_iphone_14_pro_max_battery_state') %}
-                  {% if state == 'Charging' %}
-                    mdi:battery-charging-outline
-                  {% elif battery_level_str not in ['unknown', 'unavailable']
-                  and battery_level_str | int(0) < 30 %}
-                    mdi:battery-alert-variant-outline
-                  {% endif %}
-                badge_color: >
-                  {% set battery_level_str =
-                  states('sensor.sd_iphone_14_pro_max_battery_level') %} {% set
-                  state = states('sensor.sd_iphone_14_pro_max_battery_state') %}
-                  {% if state == 'Charging' %}
-                    blue
-                  {% elif battery_level_str not in ['unknown', 'unavailable']
-                  and battery_level_str | int(0) < 30 %}
-                    red
-                  {% endif %}
-                card_mod:
-                  style: |
-                    ha-card {
-                      border: none;
-                      box-shadow: none;
-                      background: none;
-                    }
-            columns: 1
-            title: Devices
+                      {{ location }} • {{ battery }}%
+                    icon: mdi:cellphone
+                    icon_color: |
+                      {% if is_state(entity, 'home') %}
+                        green
+                      {% else %}
+                        gray
+                      {% endif %}
+                    layout: horizontal
+                    tap_action:
+                      action: more-info
+                    badge_icon: >
+                      {% set battery_level_str =
+                      states('sensor.sd_iphone_air_battery_level') %} {% set
+                      state = states('sensor.sd_iphone_air_battery_state') %} {%
+                      if state == 'Charging' %}
+                        mdi:battery-charging-outline
+                      {% elif battery_level_str not in ['unknown',
+                      'unavailable'] and battery_level_str | int(0) < 30 %}
+                        mdi:battery-alert-variant-outline
+                      {% endif %}
+                    badge_color: >
+                      {% set battery_level_str =
+                      states('sensor.sd_iphone_air_battery_level') %} {% set
+                      state = states('sensor.sd_iphone_air_battery_state') %} {%
+                      if state == 'Charging' %}
+                        blue
+                      {% elif battery_level_str not in ['unknown',
+                      'unavailable'] and battery_level_str | int(0) < 30 %}
+                        red
+                      {% endif %}
+                    card_mod:
+                      style: |
+                        ha-card {
+                          border: none;
+                          box-shadow: none;
+                          background: none;
+                        }
+                  - type: custom:mushroom-template-card
+                    entity: device_tracker.eimears_iphone
+                    primary: Eimear's iPhone
+                    secondary: >
+                      {% set battery =
+                      states('sensor.eimears_iphone_battery_level') %}
+
+                      {% set location = 'Home' if is_state(entity, 'home') else
+                      'Away' %}
+
+                      {{ location }} • {{ battery }}%
+                    icon: mdi:cellphone
+                    icon_color: |
+                      {% if is_state(entity, 'home') %}
+                        green
+                      {% else %}
+                        gray
+                      {% endif %}
+                    layout: horizontal
+                    tap_action:
+                      action: more-info
+                    badge_icon: >
+                      {% set battery_level_str =
+                      states('sensor.eimears_iphone_battery_level') %} {% set
+                      state = states('sensor.eimears_iphone_battery_state') %}
+                      {% if state == 'Charging' %}
+                        mdi:battery-charging-outline
+                      {% elif battery_level_str not in ['unknown',
+                      'unavailable'] and battery_level_str | int(0) < 30 %}
+                        mdi:battery-alert-variant-outline
+                      {% endif %}
+                    badge_color: >
+                      {% set battery_level_str =
+                      states('sensor.eimears_iphone_battery_level') %} {% set
+                      state = states('sensor.eimears_iphone_battery_state') %}
+                      {% if state == 'Charging' %}
+                        blue
+                      {% elif battery_level_str not in ['unknown',
+                      'unavailable'] and battery_level_str | int(0) < 30 %}
+                        red
+                      {% endif %}
+                    card_mod:
+                      style: |
+                        ha-card {
+                          border: none;
+                          box-shadow: none;
+                          background: none;
+                        }
+                title: Devices
+                grid_options:
+                  columns: 12
+                  rows: 1
             grid_options:
-              columns: 6
-              rows: auto
-            view_layout:
-              grid-area: lights
+              columns: 12
+              rows: 3
       - type: grid
         cards:
           - square: false
@@ -493,9 +816,9 @@ views:
                     color_thresholds:
                       - value: 10
                         color: '#126cf3'
-                      - value: 15
+                      - value: 14
                         color: '#4da6f3'
-                      - value: 17.5
+                      - value: 17
                         color: '#f3a712'
                       - value: 19
                         color: '#f36f12'
@@ -520,9 +843,9 @@ views:
                     color_thresholds:
                       - value: 10
                         color: '#126cf3'
-                      - value: 15
+                      - value: 14
                         color: '#4da6f3'
-                      - value: 17.5
+                      - value: 17
                         color: '#f3a712'
                       - value: 19
                         color: '#f36f12'
@@ -583,13 +906,13 @@ views:
                       - sensor.primary_bedroom_temphumid_temperature
                     hours_to_show: 8
                     points_per_hour: 2
-                    name: Primary Bedroom
+                    name: Main Bedroom
                     color_thresholds:
                       - value: 10
                         color: '#126cf3'
-                      - value: 15
+                      - value: 14
                         color: '#4da6f3'
-                      - value: 17.5
+                      - value: 17
                         color: '#f3a712'
                       - value: 19
                         color: '#f36f12'
@@ -607,16 +930,16 @@ views:
                       labels: false
                   - type: custom:mini-graph-card
                     entities:
-                      - sensor.guest_bedroom_temperature
+                      - sensor.guest_bedroom_temp_manual
                     hours_to_show: 8
                     points_per_hour: 2
                     name: Guest Bedroom
                     color_thresholds:
                       - value: 10
                         color: '#126cf3'
-                      - value: 15
+                      - value: 14
                         color: '#4da6f3'
-                      - value: 17.5
+                      - value: 17
                         color: '#f3a712'
                       - value: 19
                         color: '#f36f12'
@@ -681,9 +1004,9 @@ views:
                     color_thresholds:
                       - value: 10
                         color: '#126cf3'
-                      - value: 15
+                      - value: 14
                         color: '#4da6f3'
-                      - value: 17.5
+                      - value: 17
                         color: '#f3a712'
                       - value: 19
                         color: '#f36f12'
@@ -700,7 +1023,32 @@ views:
                     show:
                       labels: false
                   - type: custom:mini-graph-card
-                    entities: []
+                    entities:
+                      - sensor.main_bathroom_temp_manual
+                    hours_to_show: 8
+                    points_per_hour: 2
+                    name: Bathroom
+                    color_thresholds:
+                      - value: 10
+                        color: '#126cf3'
+                      - value: 14
+                        color: '#4da6f3'
+                      - value: 17
+                        color: '#f3a712'
+                      - value: 19
+                        color: '#f36f12'
+                      - value: 21
+                        color: '#f34512'
+                      - value: 23
+                        color: '#f31212'
+                    color_thresholds_transition: true
+                    tap_action:
+                      action: call-service
+                      service: input_boolean.toggle
+                      service_data:
+                        entity_id: input_boolean.toggle_main_bathroom
+                    show:
+                      labels: false
               - type: horizontal-stack
                 cards:
                   - type: conditional
@@ -719,7 +1067,24 @@ views:
                       set_current_as_main: true
                       disable_menu: true
                       disable_heat: false
-                      entity: climate.office_bt
+                      entity: climate.bt_office
+              - type: conditional
+                conditions:
+                  - condition: state
+                    entity: input_boolean.toggle_main_bathroom
+                    state: 'on'
+                card:
+                  type: custom:better-thermostat-ui-card
+                  name: Bathroom
+                  disable_window: true
+                  disable_summer: true
+                  disable_eco: true
+                  disable_off: false
+                  disable_buttons: false
+                  set_current_as_main: true
+                  disable_menu: true
+                  disable_heat: false
+                  entity: climate.main_bathroom
             title: Climate Control
       - '0':
           type: custom:mushroom-climate-card
