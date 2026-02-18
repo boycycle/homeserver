@@ -809,7 +809,99 @@ views:
                 cards:
                   - type: custom:mini-graph-card
                     entities:
-                      - sensor.living_room_temphumid_temperature
+                      - sensor.shellywalldisplay_heating_temperature
+                    hours_to_show: 8
+                    points_per_hour: 2
+                    name: Hall
+                    color_thresholds:
+                      - value: 10
+                        color: '#126cf3'
+                      - value: 14
+                        color: '#4da6f3'
+                      - value: 17
+                        color: '#f3a712'
+                      - value: 19
+                        color: '#f36f12'
+                      - value: 21
+                        color: '#f34512'
+                      - value: 23
+                        color: '#f31212'
+                    color_thresholds_transition: true
+                    show:
+                      labels: false
+                  - type: custom:mini-graph-card
+                    entities:
+                      - sensor.main_bedroom_temphumid_lcd_temperature
+                    hours_to_show: 8
+                    points_per_hour: 2
+                    name: Main Bedroom
+                    color_thresholds:
+                      - value: 10
+                        color: '#126cf3'
+                      - value: 14
+                        color: '#4da6f3'
+                      - value: 17
+                        color: '#f3a712'
+                      - value: 19
+                        color: '#f36f12'
+                      - value: 21
+                        color: '#f34512'
+                      - value: 23
+                        color: '#f31212'
+                    color_thresholds_transition: true
+                    show:
+                      labels: false
+              - type: horizontal-stack
+                cards:
+                  - type: custom:mini-graph-card
+                    entities:
+                      - sensor.kitchen_temphumid_temperature
+                    hours_to_show: 8
+                    points_per_hour: 2
+                    name: Kitchen
+                    color_thresholds:
+                      - value: 10
+                        color: '#126cf3'
+                      - value: 14
+                        color: '#4da6f3'
+                      - value: 17
+                        color: '#f3a712'
+                      - value: 19
+                        color: '#f36f12'
+                      - value: 21
+                        color: '#f34512'
+                      - value: 23
+                        color: '#f31212'
+                    color_thresholds_transition: true
+                    show:
+                      labels: false
+                  - type: custom:mini-graph-card
+                    entities:
+                      - sensor.guest_bedroom_temphumid_temperature
+                    hours_to_show: 8
+                    points_per_hour: 2
+                    name: Guest Bedroom
+                    color_thresholds:
+                      - value: 10
+                        color: '#126cf3'
+                      - value: 14
+                        color: '#4da6f3'
+                      - value: 17
+                        color: '#f3a712'
+                      - value: 19
+                        color: '#f36f12'
+                      - value: 21
+                        color: '#f34512'
+                      - value: 23
+                        color: '#f31212'
+                    color_thresholds_transition: true
+                    show:
+                      labels: false
+              - type: horizontal-stack
+                cards:
+                  - type: custom:mini-graph-card
+                    entities:
+                      - sensor.living_room_temphumid_lcd_temperature
                     hours_to_show: 8
                     points_per_hour: 2
                     name: Living Room
@@ -831,15 +923,15 @@ views:
                       action: call-service
                       service: input_boolean.toggle
                       service_data:
-                        entity_id: input_boolean.toggle_living_room_bt
+                        entity_id: input_boolean.toggle_office_bt
                     show:
                       labels: false
                   - type: custom:mini-graph-card
                     entities:
-                      - sensor.kitchen_average_temperature
+                      - sensor.bedroom_3_temp_manual
                     hours_to_show: 8
                     points_per_hour: 2
-                    name: Kitchen
+                    name: Bedroom 3
                     color_thresholds:
                       - value: 10
                         color: '#126cf3'
@@ -854,145 +946,8 @@ views:
                       - value: 23
                         color: '#f31212'
                     color_thresholds_transition: true
-                    tap_action:
-                      action: call-service
-                      service: input_boolean.toggle
-                      service_data:
-                        entity_id: input_boolean.toggle_kitchen_bt
                     show:
                       labels: false
-              - type: horizontal-stack
-                cards:
-                  - type: conditional
-                    conditions:
-                      - condition: state
-                        entity: input_boolean.toggle_living_room_bt
-                        state: 'on'
-                    card:
-                      type: custom:better-thermostat-ui-card
-                      entity: climate.living_room_bt
-                      name: Living Room
-                      disable_window: true
-                      disable_summer: true
-                      disable_eco: true
-                      disable_off: false
-                      disable_buttons: false
-                      set_current_as_main: true
-                      disable_menu: true
-                      disable_heat: false
-              - type: horizontal-stack
-                cards:
-                  - type: conditional
-                    conditions:
-                      - condition: state
-                        entity: input_boolean.toggle_kitchen_bt
-                        state: 'on'
-                    card:
-                      type: custom:better-thermostat-ui-card
-                      name: Kitchen
-                      disable_window: true
-                      disable_summer: true
-                      disable_eco: true
-                      disable_off: false
-                      disable_buttons: false
-                      set_current_as_main: true
-                      disable_menu: true
-                      disable_heat: false
-                      entity: climate.bt_kitchen
-              - type: horizontal-stack
-                cards:
-                  - type: custom:mini-graph-card
-                    entities:
-                      - sensor.primary_bedroom_temphumid_temperature
-                    hours_to_show: 8
-                    points_per_hour: 2
-                    name: Main Bedroom
-                    color_thresholds:
-                      - value: 10
-                        color: '#126cf3'
-                      - value: 14
-                        color: '#4da6f3'
-                      - value: 17
-                        color: '#f3a712'
-                      - value: 19
-                        color: '#f36f12'
-                      - value: 21
-                        color: '#f34512'
-                      - value: 23
-                        color: '#f31212'
-                    color_thresholds_transition: true
-                    tap_action:
-                      action: call-service
-                      service: input_boolean.toggle
-                      service_data:
-                        entity_id: input_boolean.toggle_primary_bedroom_bt
-                    show:
-                      labels: false
-                  - type: custom:mini-graph-card
-                    entities:
-                      - sensor.guest_bedroom_temp_manual
-                    hours_to_show: 8
-                    points_per_hour: 2
-                    name: Guest Bedroom
-                    color_thresholds:
-                      - value: 10
-                        color: '#126cf3'
-                      - value: 14
-                        color: '#4da6f3'
-                      - value: 17
-                        color: '#f3a712'
-                      - value: 19
-                        color: '#f36f12'
-                      - value: 21
-                        color: '#f34512'
-                      - value: 23
-                        color: '#f31212'
-                    color_thresholds_transition: true
-                    tap_action:
-                      action: call-service
-                      service: input_boolean.toggle
-                      service_data:
-                        entity_id: input_boolean.toggle_guest_bedroom_bt
-                    show:
-                      labels: false
-              - type: horizontal-stack
-                cards:
-                  - type: conditional
-                    conditions:
-                      - condition: state
-                        entity: input_boolean.toggle_primary_bedroom_bt
-                        state: 'on'
-                    card:
-                      type: custom:better-thermostat-ui-card
-                      name: Primary Bedroom
-                      disable_window: true
-                      disable_summer: true
-                      disable_eco: true
-                      disable_off: false
-                      disable_buttons: false
-                      set_current_as_main: true
-                      disable_menu: true
-                      disable_heat: false
-                      entity: climate.primary_bedroom_bt
-              - type: horizontal-stack
-                cards:
-                  - type: conditional
-                    conditions:
-                      - condition: state
-                        entity: input_boolean.toggle_guest_bedroom_bt
-                        state: 'on'
-                    card:
-                      type: custom:better-thermostat-ui-card
-                      name: Guest Bedroom
-                      disable_window: true
-                      disable_summer: true
-                      disable_eco: true
-                      disable_off: false
-                      disable_buttons: false
-                      set_current_as_main: true
-                      disable_menu: true
-                      disable_heat: false
-                      entity: climate.guest_bedroom_bt
               - type: horizontal-stack
                 cards:
                   - type: custom:mini-graph-card
@@ -1027,7 +982,31 @@ views:
                       - sensor.main_bathroom_temp_manual
                     hours_to_show: 8
                     points_per_hour: 2
-                    name: Bathroom
+                    name: Main Bathroom
+                    color_thresholds:
+                      - value: 10
+                        color: '#126cf3'
+                      - value: 14
+                        color: '#4da6f3'
+                      - value: 17
+                        color: '#f3a712'
+                      - value: 19
+                        color: '#f36f12'
+                      - value: 21
+                        color: '#f34512'
+                      - value: 23
+                        color: '#f31212'
+                    color_thresholds_transition: true
+                    show:
+                      labels: false
+              - type: horizontal-stack
+                cards:
+                  - type: custom:mini-graph-card
+                    entities:
+                      - sensor.hot_wate
+                    hours_to_show: 8
+                    points_per_hour: 2
+                    name: Office
                     color_thresholds:
                       - value: 10
                         color: '#126cf3'
@@ -1046,45 +1025,31 @@ views:
                       action: call-service
                       service: input_boolean.toggle
                       service_data:
-                        entity_id: input_boolean.toggle_main_bathroom
+                        entity_id: input_boolean.toggle_office_bt
                     show:
                       labels: false
-              - type: horizontal-stack
-                cards:
-                  - type: conditional
-                    conditions:
-                      - condition: state
-                        entity: input_boolean.toggle_office_bt
-                        state: 'on'
-                    card:
-                      type: custom:better-thermostat-ui-card
-                      name: Office
-                      disable_window: true
-                      disable_summer: true
-                      disable_eco: true
-                      disable_off: false
-                      disable_buttons: false
-                      set_current_as_main: true
-                      disable_menu: true
-                      disable_heat: false
-                      entity: climate.bt_office
-              - type: conditional
-                conditions:
-                  - condition: state
-                    entity: input_boolean.toggle_main_bathroom
-                    state: 'on'
-                card:
-                  type: custom:better-thermostat-ui-card
-                  name: Bathroom
-                  disable_window: true
-                  disable_summer: true
-                  disable_eco: true
-                  disable_off: false
-                  disable_buttons: false
-                  set_current_as_main: true
-                  disable_menu: true
-                  disable_heat: false
-                  entity: climate.main_bathroom
+                  - type: custom:mini-graph-card
+                    entities:
+                      - sensor.upstairs_temphumid_temperature
+                    hours_to_show: 8
+                    points_per_hour: 2
+                    name: Upstairs
+                    color_thresholds:
+                      - value: 10
+                        color: '#126cf3'
+                      - value: 14
+                        color: '#4da6f3'
+                      - value: 17
+                        color: '#f3a712'
+                      - value: 19
+                        color: '#f36f12'
+                      - value: 21
+                        color: '#f34512'
+                      - value: 23
+                        color: '#f31212'
+                    color_thresholds_transition: true
+                    show:
+                      labels: false
             title: Climate Control
       - '0':
           type: custom:mushroom-climate-card
@@ -1641,173 +1606,6 @@ views:
               name:
                 - opacity: 60%
                 - font-size: 16px
-      - type: grid
-        cards:
-          - square: false
-            type: grid
-            cards:
-              - type: custom:button-card
-                entity: switch.linux_pc
-                icon: mdi:desktop-tower
-                name: Proxmox
-                aspect_ratio: 1/1
-                label: >
-                  [[[ return states['switch.linux_pc'].state === 'on' ? 'On' :
-                  'Off'; ]]]
-                show_name: true
-                show_label: true
-                show_icon: true
-                tap_action:
-                  action: call-service
-                  service: switch.toggle
-                  target:
-                    entity_id: switch.linux_pc
-                  confirmation:
-                    text: |
-                      [[[
-                        return entity.state === 'off'
-                          ? 'Do you want to start Proxmox?'
-                          : 'Do you want to stop Proxmox?';
-                      ]]]
-                styles:
-                  name:
-                    - font-size: 12px
-                    - padding-bottom: 3px !important;
-                  state:
-                    - font-size: 18px
-                    - padding-bottom: 8px !important;
-                state:
-                  - value: 'on'
-                    styles:
-                      card:
-                        - background-color: var(--primary-text-color)
-                      name:
-                        - color: '#263238'
-                      label:
-                        - color: '#263238'
-                      icon:
-                        - color: |
-                            [[[
-                              if (entity.attributes.rgb_color) {
-                                return `rgb(${entity.attributes.rgb_color.join(',')})`;
-                              }
-                              return 'black';
-                            ]]]
-              - type: custom:button-card
-                entity: switch.10amp_smart_plug_socket_1
-                icon: mdi:desktop-tower
-                name: Remote Server
-                aspect_ratio: 1/1
-                label: >
-                  [[[ return states['switch.10amp_smart_plug_socket_1'].state
-                  === 'on' ? 'On' : 'Off'; ]]]
-                show_name: true
-                show_label: true
-                show_icon: true
-                tap_action:
-                  action: call-service
-                  service: switch.toggle
-                  target:
-                    entity_id: switch.10amp_smart_plug_socket_1
-                  confirmation:
-                    text: |
-                      [[[
-                        return entity.state === 'off'
-                          ? 'Do you want to start Remote Server?'
-                          : 'Do you want to stop Remote Server?';
-                      ]]]
-                styles:
-                  name:
-                    - font-size: 12px
-                    - padding-bottom: 3px !important;
-                  state:
-                    - font-size: 18px
-                    - padding-bottom: 8px !important;
-                state:
-                  - value: 'on'
-                    styles:
-                      card:
-                        - background-color: var(--primary-text-color)
-                      name:
-                        - color: '#263238'
-                      label:
-                        - color: '#263238'
-                      icon:
-                        - color: |
-                            [[[
-                              if (entity.attributes.rgb_color) {
-                                return `rgb(${entity.attributes.rgb_color.join(',')})`;
-                              }
-                              return 'black';
-                            ]]]
-              - type: custom:button-card
-                entity: switch.ubuntu_pc
-                icon: mdi:desktop-tower
-                name: Ubuntu PC
-                aspect_ratio: 1/1
-                label: >
-                  [[[ return states['switch.ubuntu_pc'].state === 'on' ? 'On' :
-                  'Off'; ]]]
-                show_name: true
-                show_label: true
-                show_icon: true
-                tap_action:
-                  action: call-service
-                  service: switch.toggle
-                  target:
-                    entity_id: switch.ubuntu_pc
-                  confirmation:
-                    text: |
-                      [[[
-                        return entity.state === 'off'
-                          ? 'Do you want to start Ubuntu PC?'
-                          : 'Do you want to stop Ubuntu PC?';
-                      ]]]
-                styles:
-                  name:
-                    - font-size: 12px
-                    - padding-bottom: 3px !important;
-                  state:
-                    - font-size: 18px
-                    - padding-bottom: 8px !important;
-                state:
-                  - value: 'on'
-                    styles:
-                      card:
-                        - background-color: var(--primary-text-color)
-                      name:
-                        - color: '#263238'
-                      label:
-                        - color: '#263238'
-                      icon:
-                        - color: |
-                            [[[
-                              if (entity.attributes.rgb_color) {
-                                return `rgb(${entity.attributes.rgb_color.join(',')})`;
-                              }
-                              return 'black';
-                            ]]]
-            title: Servers
-            columns: 3
-          - square: false
-            type: grid
-            cards:
-              - type: entities
-                entities:
-                  - entity: sensor.system_monitor_ipv4_address_enp1s0
-                    name: Current IP Address
-                    secondary_info: none
-                  - entity: sensor.system_monitor_ipv4_address_tailscale0
-                    name: Tailscale IP Address
-                  - entity: binary_sensor.tailscale_running
-                    name: Tailscale
-                    icon: phu:tailscale
-                    secondary_info: none
-                  - entity: binary_sensor.adguard_home_running
-                    icon: phu:adguard
-                    name: Dns
-            title: Network
-            columns: 1
     theme: Material You
     badges: []
     background:
