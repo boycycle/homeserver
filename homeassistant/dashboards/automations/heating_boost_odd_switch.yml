@@ -1,0 +1,15 @@
+alias: Heating Boost - Off Switch
+description: Turns off boost button if heating is manually turned off
+triggers:
+  - trigger: state
+    entity_id: switch.shellywalldisplay_heating
+    to: 'off'
+conditions:
+  - condition: state
+    entity_id: input_boolean.heating_boost
+    state: 'on'
+actions:
+  - target:
+      entity_id: input_boolean.heating_boost
+    action: input_boolean.turn_off
+mode: single
