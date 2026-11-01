@@ -1,0 +1,71 @@
+alias: Bedroom Plug Overnight Rad Temperature
+description: ''
+triggers:
+  - trigger: time
+    at: '23:59:00'
+    id: start_night
+  - trigger: numeric_state
+    entity_id: sensor.main_bedroom_temphumid_lcd_temperature
+    below: 17.5
+    id: too_cold
+  - trigger: numeric_state
+    entity_id: sensor.main_bedroom_temphumid_lcd_temperature
+    above: 18.5
+    id: warm_enough
+  - trigger: time
+    at: '07:00:00'
+    id: end_night
+conditions: []
+actions:
+  - choose:
+      - conditions:
+          - condition: trigger
+            id: start_night
+          - condition: numeric_state
+            entity_id: sensor.main_bedroom_temphumid_lcd_temperature
+            below: 18.5
+        sequence:
+          - action: switch.turn_on
+            target:
+              device_id: f9299d69db20c16bc7091ec4a4d8cd2e
+      - conditions:
+          - condition: trigger
+            id: start_night
+        sequence:
+          - action: switch.turn_off
+            target:
+              device_id: f9299d69db20c16bc7091ec4a4d8cd2e
+      - conditions:
+          - condition: trigger
+            id: too_cold
+          - condition: or
+            conditions:
+              - condition: time
+                after: '23:59:00'
+              - condition: time
+                before: '07:00:00'
+        sequence:
+          - action: switch.turn_on
+            target:
+              device_id: f9299d69db20c16bc7091ec4a4d8cd2e
+      - conditions:
+          - condition: trigger
+            id: warm_enough
+          - condition: or
+            conditions:
+              - condition: time
+                after: '23:59:00'
+              - condition: time
+                before: '07:00:00'
+        sequence:
+          - action: switch.turn_off
+            target:
+              device_id: f9299d69db20c16bc7091ec4a4d8cd2e
+      - conditions:
+          - condition: trigger
+            id: end_night
+        sequence:
+          - action: switch.turn_off
+            target:
+              device_id: f9299d69db20c16bc7091ec4a4d8cd2e
+mode: single
