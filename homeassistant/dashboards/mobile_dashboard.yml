@@ -44,11 +44,11 @@ button_card_templates:
             "n n n"
       icon:
         - width: 26px
-        - margin-left: '-0.5%'
+        - margin-left: -0.5%
         - margin-top: 1%
       img_cell:
         - justify-content: flex-start
-        - margin-top: '-4px'
+        - margin-top: -4px
       state:
         - justify-self: start
         - font-size: 14px
@@ -59,7 +59,7 @@ button_card_templates:
         - border-radius: 24px
         - padding: 12px 0 12px 14px
         - box-sizing: border-box
-        - '--mdc-ripple-press-opacity': 0
+        - --mdc-ripple-press-opacity: 0
       name:
         - justify-self: start
         - font-size: 12px
@@ -99,7 +99,7 @@ views:
                           size: 40%
                           show_state: true
                           aspect_ratio: 1/1
-                          tap_action:
+                          double_tap_action:
                             action: toggle
                           hold_action:
                             action: more-info
@@ -238,7 +238,7 @@ views:
                             - value: 'off'
                               icon: mdi:lightbulb-off
                         - type: custom:button-card
-                          name: Living Room Big
+                          name: Lumos Big
                           entity: switch.big_lamp
                           icon: mdi:lightbulb-off
                           size: 40%
@@ -276,7 +276,7 @@ views:
                             - value: 'off'
                               icon: mdi:lightbulb-off
                         - type: custom:button-card
-                          name: Living Room Small
+                          name: Lumos Small
                           entity: switch.shane_lamp
                           icon: mdi:lightbulb-off
                           size: 40%
@@ -313,6 +313,44 @@ views:
                                       ]]]
                             - value: 'off'
                               icon: mdi:lightbulb-off
+                        - type: custom:button-card
+                          name: Electric Radiator
+                          entity: switch.electric_radiator
+                          icon: mdi:radiator
+                          size: 40%
+                          show_state: true
+                          aspect_ratio: 1/1
+                          tap_action:
+                            action: toggle
+                          hold_action:
+                            action: more-info
+                          styles:
+                            name:
+                              - font-size: 12px
+                              - padding-bottom: 3px !important
+                            state:
+                              - font-size: 18px
+                              - padding-bottom: 8px !important
+                          state:
+                            - value: 'on'
+                              icon: mdi:radiator
+                              styles:
+                                card:
+                                  - background-color: var(--primary-text-color)
+                                name:
+                                  - color: '#263238'
+                                state:
+                                  - color: '#263238'
+                                icon:
+                                  - color: |
+                                      [[[
+                                        if (entity.attributes.rgb_color) {
+                                          return `rgb(${entity.attributes.rgb_color.join(',')})`;
+                                        }
+                                        return 'orange';
+                                      ]]]
+                            - value: 'off'
+                              icon: mdi:radiator-off
               - type: grid
                 square: false
                 title: Controls
@@ -383,13 +421,13 @@ views:
                     icon: mdi:oil-level
                     fill_container: true
                     tap_action:
-                      action: none
+                      action: more-info
                     hold_action:
                       action: none
                     double_tap_action:
                       action: none
                     icon_tap_action:
-                      action: none
+                      action: more-info
                     icon_color: disabled
                     card_mod:
                       style: |
@@ -399,12 +437,12 @@ views:
                           background: none;
                         }
                   - type: custom:mushroom-entity-card
-                    name: Water Salt (Last Added)
+                    name: Water Salt
                     entity: sensor.days_since_water_salt
                     icon: mdi:shaker-outline
                     fill_container: true
                     tap_action:
-                      action: none
+                      action: more-info
                     hold_action:
                       action: none
                     double_tap_action:
@@ -490,7 +528,6 @@ views:
                       action: more-info
                     entity: climate.bt_office
                   - type: custom:mushroom-climate-card
-                    entity: climate.hot_water_2
                     name: Hot Water
                     icon: mdi:water
                     fill_container: false
@@ -504,6 +541,7 @@ views:
                       action: more-info
                     double_tap_action:
                       action: more-info
+                    entity: climate.hot_water_tank
               - type: vertical-stack
                 cards:
                   - type: custom:mushroom-climate-card
@@ -539,7 +577,7 @@ views:
                       action: more-info
                   - type: custom:mushroom-climate-card
                     entity: climate.bedroom_3_bt
-                    name: Bedroom 3
+                    name: Oisín Bedroom
                     fill_container: false
                     icon: mdi:bed-single-outline
                     hvac_modes:
@@ -582,177 +620,8 @@ views:
                       action: more-info
                     double_tap_action:
                       action: more-info
-                    entity: climate.upstairs_bt
+                    entity: climate.upstairs
             title: Heating
-          - type: vertical-stack
-            cards:
-              - type: horizontal-stack
-                cards:
-                  - type: custom:mushroom-template-card
-                    entity: device_tracker.sd_iphone_air
-                    primary: Shane's iPhone
-                    secondary: >
-                      {% set battery =
-                      states('sensor.sd_iphone_air_battery_level') %}
-
-                      {% set location = 'Home' if is_state(entity, 'home') else
-                      'Away' %}
-
-                      {{ location }} • {{ battery }}%
-                    icon: mdi:cellphone
-                    icon_color: |
-                      {% if is_state(entity, 'home') %}
-                        green
-                      {% else %}
-                        gray
-                      {% endif %}
-                    layout: horizontal
-                    tap_action:
-                      action: more-info
-                    badge_icon: >
-                      {% set battery_level_str =
-                      states('sensor.sd_iphone_air_battery_level') %} {% set
-                      state = states('sensor.sd_iphone_air_battery_state') %} {%
-                      if state == 'Charging' %}
-                        mdi:battery-charging-outline
-                      {% elif battery_level_str not in ['unknown',
-                      'unavailable'] and battery_level_str | int(0) < 30 %}
-                        mdi:battery-alert-variant-outline
-                      {% endif %}
-                    badge_color: >
-                      {% set battery_level_str =
-                      states('sensor.sd_iphone_air_battery_level') %} {% set
-                      state = states('sensor.sd_iphone_air_battery_state') %} {%
-                      if state == 'Charging' %}
-                        blue
-                      {% elif battery_level_str not in ['unknown',
-                      'unavailable'] and battery_level_str | int(0) < 30 %}
-                        red
-                      {% endif %}
-                    card_mod:
-                      style: |
-                        ha-card {
-                          border: none;
-                          box-shadow: none;
-                          background: none;
-                        }
-                  - type: custom:mushroom-template-card
-                    entity: device_tracker.eimears_iphone
-                    primary: Eimear's iPhone
-                    secondary: >
-                      {% set battery =
-                      states('sensor.eimears_iphone_battery_level') %}
-
-                      {% set location = 'Home' if is_state(entity, 'home') else
-                      'Away' %}
-
-                      {{ location }} • {{ battery }}%
-                    icon: mdi:cellphone
-                    icon_color: |
-                      {% if is_state(entity, 'home') %}
-                        green
-                      {% else %}
-                        gray
-                      {% endif %}
-                    layout: horizontal
-                    tap_action:
-                      action: more-info
-                    badge_icon: >
-                      {% set battery_level_str =
-                      states('sensor.eimears_iphone_battery_level') %} {% set
-                      state = states('sensor.eimears_iphone_battery_state') %}
-                      {% if state == 'Charging' %}
-                        mdi:battery-charging-outline
-                      {% elif battery_level_str not in ['unknown',
-                      'unavailable'] and battery_level_str | int(0) < 30 %}
-                        mdi:battery-alert-variant-outline
-                      {% endif %}
-                    badge_color: >
-                      {% set battery_level_str =
-                      states('sensor.eimears_iphone_battery_level') %} {% set
-                      state = states('sensor.eimears_iphone_battery_state') %}
-                      {% if state == 'Charging' %}
-                        blue
-                      {% elif battery_level_str not in ['unknown',
-                      'unavailable'] and battery_level_str | int(0) < 30 %}
-                        red
-                      {% endif %}
-                    card_mod:
-                      style: |
-                        ha-card {
-                          border: none;
-                          box-shadow: none;
-                          background: none;
-                        }
-                title: Devices
-                grid_options:
-                  columns: 12
-                  rows: 1
-            grid_options:
-              columns: 12
-              rows: 3
-      - type: grid
-        cards:
-          - square: false
-            type: grid
-            cards:
-              - type: custom:timeflow-card
-                title: 🗑️ Rubbish Collection
-                target_date: '{{ states(''sensor.next_rubbish_collection'') }}'
-                entities:
-                  - name: Next Rubbish Pickup
-                    icon: mdi:trash-can
-                    color: gray
-              - type: custom:timeflow-card
-                title: Backup
-                target_date: sensor.backup_next_scheduled_automatic_backup
-                color: '#ffffff'
-                progress_color: '#8391B2'
-                show_seconds: false
-                show_minutes: false
-                show_hours: true
-                show_days: false
-                show_months: false
-                background_color: rgba(69, 70, 68, 0.4)
-                creation_date: sensor.backup_last_successful_automatic_backup
-                card_mod:
-                  style:
-                    .: |
-                      ha-card {
-                        border-radius: 28px !important;
-                        box-shadow: none !important;
-                        border: none !important;
-                       }
-                      ha-card .title {
-                        font-size: 1.4rem !important;
-                      }
-                      ha-card .subtitle {
-                        font-size: 1.3rem !important;
-                      }
-                      ha-card .subtitle {
-                        color: #888888; /* A light gray */
-                      }
-                      .card-content {
-                        flex-direction: row !important;
-                        align-items: center !important;
-                        
-                tap_action:
-                  action: more-info
-                  entity: sensor.backup_last_successful_automatic_backup
-            columns: 2
-            title: Timeflows
-            view_layout:
-              grid-area: lights
-          - type: custom:button-card
-            name: Looks like you've reached the end 👀
-            styles:
-              card:
-                - background: none
-                - box-shadow: none
-                - border: none
-              name:
-                - opacity: 60%
-                - font-size: 16px
       - type: grid
         cards:
           - type: custom:navbar-card
@@ -779,6 +648,8 @@ views:
                 label: Timeflows
             mobile:
               mode: floating
+        column_span: 1
+        theme: Liquid Glass
     theme: Material You
     badges: []
     background:
@@ -919,19 +790,14 @@ views:
                       - value: 23
                         color: '#f31212'
                     color_thresholds_transition: true
-                    tap_action:
-                      action: call-service
-                      service: input_boolean.toggle
-                      service_data:
-                        entity_id: input_boolean.toggle_office_bt
                     show:
                       labels: false
                   - type: custom:mini-graph-card
                     entities:
-                      - sensor.bedroom_3_temp_manual
+                      - sensor.bedroom_3_temphumid_lcd_temperature
                     hours_to_show: 8
                     points_per_hour: 2
-                    name: Bedroom 3
+                    name: Oisín Bedroom
                     color_thresholds:
                       - value: 10
                         color: '#126cf3'
@@ -970,16 +836,11 @@ views:
                       - value: 23
                         color: '#f31212'
                     color_thresholds_transition: true
-                    tap_action:
-                      action: call-service
-                      service: input_boolean.toggle
-                      service_data:
-                        entity_id: input_boolean.toggle_office_bt
                     show:
                       labels: false
                   - type: custom:mini-graph-card
                     entities:
-                      - sensor.main_bathroom_temp_manual
+                      - sensor.main_bathroom_temphumid_lcd_temperature
                     hours_to_show: 8
                     points_per_hour: 2
                     name: Main Bathroom
@@ -1003,10 +864,10 @@ views:
                 cards:
                   - type: custom:mini-graph-card
                     entities:
-                      - sensor.hot_wate
+                      - sensor.hot_water_local_temperature
                     hours_to_show: 8
                     points_per_hour: 2
-                    name: Office
+                    name: Hot Water
                     color_thresholds:
                       - value: 10
                         color: '#126cf3'
@@ -1021,11 +882,6 @@ views:
                       - value: 23
                         color: '#f31212'
                     color_thresholds_transition: true
-                    tap_action:
-                      action: call-service
-                      service: input_boolean.toggle
-                      service_data:
-                        entity_id: input_boolean.toggle_office_bt
                     show:
                       labels: false
                   - type: custom:mini-graph-card
@@ -1426,8 +1282,54 @@ views:
                   reverse: true
             title: Updates
             columns: 1
+        column_span: 1
+        theme: Liquid Glass
       - type: grid
         cards:
+          - square: false
+            type: grid
+            cards:
+              - type: custom:timeflow-card
+                title: Last Local HA Backup
+                target_date: sensor.backup_next_scheduled_automatic_backup
+                color: '#ffffff'
+                progress_color: '#8391B2'
+                show_seconds: false
+                show_minutes: false
+                show_hours: true
+                show_days: false
+                show_months: false
+                background_color: rgba(69, 70, 68, 0.4)
+                creation_date: sensor.backup_last_successful_automatic_backup
+                card_mod:
+                  style:
+                    .: |
+                      ha-card {
+                        border-radius: 28px !important;
+                        box-shadow: none !important;
+                        border: none !important;
+                       }
+                      ha-card .title {
+                        font-size: 1.4rem !important;
+                      }
+                      ha-card .subtitle {
+                        font-size: 1.3rem !important;
+                      }
+                      ha-card .subtitle {
+                        color: #888888; /* A light gray */
+                      }
+                      .card-content {
+                        flex-direction: row !important;
+                        align-items: center !important;
+                        
+                tap_action:
+                  action: more-info
+                  entity: sensor.backup_last_successful_automatic_backup
+                compact_format: false
+            columns: 1
+            title: Backups
+            view_layout:
+              grid-area: lights
           - type: vertical-stack
             title: System Options
             cards:
@@ -1606,6 +1508,10 @@ views:
               name:
                 - opacity: 60%
                 - font-size: 16px
+        column_span: 1
+        theme: Liquid Glass
+      - type: grid
+        cards: []
     theme: Material You
     badges: []
     background:
@@ -1830,6 +1736,8 @@ views:
                 label: Timeflows
             mobile:
               mode: floating
+        column_span: 1
+        theme: Liquid Glass
     header: {}
     cards: []
     theme: Material You
