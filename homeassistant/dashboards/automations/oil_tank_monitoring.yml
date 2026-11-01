@@ -1,0 +1,44 @@
+alias: Oil tank - Estimated Monitoring
+description: ''
+triggers:
+  - trigger: time_pattern
+    minutes: /1
+  - trigger: state
+    entity_id: switch.shellywalldisplay_heating
+actions:
+  - variables:
+      rate_lph: '{{ states(''input_number.oil_burn_rate_l_h'') | float(2.70) }}'
+      tank_now: '{{ states(''input_number.oil_tank_litres'') | float(0) }}'
+      last_raw: '{{ states(''input_datetime.oil_tank_last_update'') }}'
+      last_ts: '{{ as_timestamp(last_raw) | float(0) }}'
+      now_ts: '{{ as_timestamp(now()) }}'
+      is_on: '{{ is_state(''switch.shellywalldisplay_heating'', ''on'') }}'
+      dt_seconds: '{{ max(0, now_ts - last_ts) }}'
+      dt_hours: '{{ dt_seconds / 3600 }}'
+      used_l: '{{ (rate_lph * dt_hours) if is_on else 0 }}'
+      new_tank: '{{ max(0, tank_now - used_l) | round(2) }}'
+  - choose:
+      - conditions:
+          - condition: template
+            value_template: '{{ is_on and dt_seconds >= 10 }}'
+        sequence:
+          - action: input_number.set_value
+            target:
+              entity_id: input_number.oil_tank_litres
+            data:
+              value: '{{ new_tank }}'
+          - action: input_datetime.set_datetime
+            target:
+              entity_id: input_datetime.oil_tank_last_update
+            data:
+              timestamp: '{{ now().timestamp() }}'
+      - conditions:
+          - condition: template
+            value_template: '{{ not is_on }}'
+        sequence:
+          - action: input_datetime.set_datetime
+            target:
+              entity_id: input_datetime.oil_tank_last_update
+            data:
+              timestamp: '{{ now().timestamp() }}'
+mode: single
