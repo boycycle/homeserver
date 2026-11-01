@@ -1,0 +1,25 @@
+alias: Heating Safety Cut-Off - 2 Hours
+description: Ensures heating can never stay on longer than 3 hours
+triggers:
+  - entity_id: switch.shellywalldisplay_heating
+    to: 'on'
+    trigger: state
+actions:
+  - delay: '02:00:00'
+  - condition: state
+    entity_id: switch.shellywalldisplay_heating
+    state: 'on'
+  - target:
+      entity_id: switch.shellywalldisplay_heating
+    action: switch.turn_off
+  - repeat:
+      while:
+        - condition: state
+          entity_id: switch.shellywalldisplay_heating
+          state: unavailable
+      sequence:
+        - delay: '00:00:10'
+        - target:
+            entity_id: switch.shellywalldisplay_heating
+          action: switch.turn_off
+mode: restart
