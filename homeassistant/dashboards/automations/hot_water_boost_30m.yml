@@ -1,0 +1,86 @@
+alias: Hot Water Boost - 30 Minutes
+description: Boost the hot water for 30 mins
+triggers:
+  - entity_id: input_boolean.hot_water_boost
+    to: 'on'
+    trigger: state
+actions:
+  - target:
+      entity_id: switch.shellywalldisplay_heating
+    action: switch.turn_on
+  - repeat:
+      while:
+        - condition: state
+          entity_id: switch.shellywalldisplay_heating
+          state: unavailable
+      sequence:
+        - delay: '00:00:10'
+        - target:
+            entity_id: switch.shellywalldisplay_heating
+          action: switch.turn_on
+  - target:
+      entity_id:
+        - climate.main_bedroom_bt
+        - climate.living_room_bt
+        - climate.bt_office
+        - climate.bt_kitchen
+        - climate.guest_bedroom_bt
+        - climate.main_bathroom_2
+        - climate.bedroom_3_bt
+        - climate.hall_bt
+        - climate.upstairs
+    data:
+      hvac_mode: 'off'
+    action: climate.set_hvac_mode
+  - target:
+      entity_id: climate.hot_water_tank
+    data:
+      hvac_mode: heat
+    action: climate.set_hvac_mode
+  - target:
+      entity_id: climate.hot_water_tank
+    data:
+      temperature: 35
+    action: climate.set_temperature
+  - wait_for_trigger:
+      - entity_id: input_boolean.hot_water_boost
+        to: 'off'
+        trigger: state
+    timeout: '00:30:00'
+  - target:
+      entity_id: switch.shellywalldisplay_heating
+    action: switch.turn_off
+  - repeat:
+      while:
+        - condition: state
+          entity_id: switch.shellywalldisplay_heating
+          state: unavailable
+      sequence:
+        - delay: '00:00:10'
+        - target:
+            entity_id: switch.shellywalldisplay_heating
+          action: switch.turn_off
+  - target:
+      entity_id:
+        - climate.main_bedroom_bt
+        - climate.living_room_bt
+        - climate.bt_office
+        - climate.bt_kitchen
+        - climate.guest_bedroom_bt
+        - climate.main_bathroom_2
+        - climate.bedroom_3_bt
+        - climate.hall_bt
+        - climate.upstairs
+    data:
+      hvac_mode: heat
+    action: climate.set_hvac_mode
+  - target:
+      entity_id: climate.hot_water_tank
+    data:
+      hvac_mode: 'off'
+    action: climate.set_hvac_mode
+  - target:
+      entity_id: input_boolean.hot_water_boost
+    action: input_boolean.turn_off
+    data: {}
+mode: restart
