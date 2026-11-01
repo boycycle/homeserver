@@ -1,0 +1,41 @@
+alias: Heating Boost - 1 Hour
+triggers:
+  - entity_id: input_boolean.heating_boost
+    to: 'on'
+    trigger: state
+actions:
+  - target:
+      entity_id: switch.shellywalldisplay_heating
+    action: switch.turn_on
+  - repeat:
+      while:
+        - condition: state
+          entity_id: switch.shellywalldisplay_heating
+          state: unavailable
+      sequence:
+        - delay: '00:00:30'
+        - target:
+            entity_id: switch.shellywalldisplay_heating
+          action: switch.turn_on
+  - wait_for_trigger:
+      - entity_id: input_boolean.heating_boost
+        to: 'off'
+        trigger: state
+    timeout: '01:00:00'
+  - target:
+      entity_id: switch.shellywalldisplay_heating
+    action: switch.turn_off
+  - repeat:
+      while:
+        - condition: state
+          entity_id: switch.shellywalldisplay_heating
+          state: unavailable
+      sequence:
+        - delay: '00:00:30'
+        - target:
+            entity_id: switch.shellywalldisplay_heating
+          action: switch.turn_off
+  - target:
+      entity_id: input_boolean.heating_boost
+    action: input_boolean.turn_off
+mode: single
